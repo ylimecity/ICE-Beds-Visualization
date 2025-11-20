@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICE Beds by Threat Level - FY2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fafafa;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .intro-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px;
+            text-align: center;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .intro-section h1 {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: 3.5em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #1a1a1a;
+            line-height: 1.2;
+            max-width: 900px;
+        }
+
+        .intro-section .subtitle {
+            font-size: 1.25em;
+            max-width: 700px;
+            line-height: 1.7;
+            color: #4a4a4a;
+            font-weight: 400;
+        }
+
+        .intro-section .scroll-hint {
+            margin-top: 60px;
+            font-size: 0.9em;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 500;
+        }
+
+        .viz-container {
+            min-height: 400vh;
+            background: #ffffff;
+            padding: 80px 40px;
+        }
+
+        .beds-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: sticky;
+            top: 100px;
+        }
+
+        .section-title {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+
+        .beds-grid {
+            display: grid;
+            grid-template-columns: repeat(25, 1fr);
+            gap: 8px;
+            margin-bottom: 50px;
+        }
+
+        .bed {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+        }
+
+        .bed svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bed .bed-frame {
+            fill: #e8e8e8;
+            transition: fill 0.5s ease;
+        }
+
+        .bed.threat-1 .bed-frame {
+            fill: #c1272d;
+        }
+
+        .bed.threat-2 .bed-frame {
+            fill: #e67e22;
+        }
+
+        .bed.threat-3 .bed-frame {
+            fill: #f39c12;
+        }
+
+        .bed.no-threat .bed-frame {
+            fill: #3498db;
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            padding: 40px;
+            background: #fafafa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .legend-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .legend-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .legend-label {
+            font-weight: 600;
+            font-size: 1em;
+            color: #1a1a1a;
+        }
+
+        .legend-description {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .legend-count {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: 2em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-top: 5px;
+        }
+
+        .stats {
+            margin-top: 60px;
+            padding: 50px 40px;
+            background: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .stats h3 {
+            font-family: 'Crimson Text', Georgia, serif;
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .key-finding {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #2c3e50;
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-left: 4px solid #2c3e50;
+        }
+
+        .key-finding strong {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        @media (max-width: 768px) {
+            .beds-grid {
+                grid-template-columns: repeat(15, 1fr);
+                gap: 5px;
+            }
+            
+            .intro-section h1 {
+                font-size: 2.2em;
+            }
+            
+            .intro-section .subtitle {
+                font-size: 1.1em;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+
+            .legend {
+                grid-template-columns: 1fr;
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="intro-section">
+        <h1>Plymouth County Correctional Facility</h1>
+        <p class="subtitle">ICE rents 500 beds at this facility, with 450 currently occupied. As you scroll, watch how these beds fill in by threat level classification.</p>
+        <p class="scroll-hint">Scroll to explore ↓</p>
+    </div>
+
+    <div class="viz-container">
+        <div class="beds-wrapper">
+            <h2 class="section-title">450 Beds by Threat Level</h2>
+            <p class="section-subtitle">Average Daily Population, FY2025</p>
+            
+            <div class="beds-grid" id="bedsGrid"></div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-header">
+                        <div class="legend-color" style="background: #c1272d;"></div>
+                        <div class="legend-label">Threat Level 1</div>
+                    </div>
+                    <div class="legend-description">Highest severity based on recency and seriousness of criminal behavior</div>
+                    <div class="legend-count">34 beds</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-header">
+                        <div class="legend-color" style="background: #e67e22;"></div>
+                        <div class="legend-label">Threat Level 2</div>
+                    </div>
+                    <div class="legend-description">Medium severity criminal history</div>
+                    <div class="legend-count">13 beds</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-header">
+                        <div class="legend-color" style="background: #f39c12;"></div>
+                        <div class="legend-label">Threat Level 3</div>
+                    </div>
+                    <div class="legend-description">Lower severity criminal history</div>
+                    <div class="legend-count">11 beds</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-header">
+                        <div class="legend-color" style="background: #3498db;"></div>
+                        <div class="legend-label">No Threat Level</div>
+                    </div>
+                    <div class="legend-description">No criminal convictions</div>
+                    <div class="legend-count">392 beds</div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <h3>The Bottom Line</h3>
+                <div class="key-finding">
+                    <strong>87.1%</strong> of ICE detainees at Plymouth County Correctional Facility have no criminal convictions. Only <strong>58 of 450 occupied beds</strong> (12.9%) are held by individuals with any threat level classification.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data from CSV
+        const data = {
+            threat1: 34,
+            threat2: 13,
+            threat3: 11,
+            noThreat: 392
+        };
+
+        const totalBeds = 450;
+        const grid = document.getElementById('bedsGrid');
+
+        // Create all 450 beds with bed icon SVG
+        const beds = [];
+        for (let i = 0; i < totalBeds; i++) {
+            const bed = document.createElement('div');
+            bed.className = 'bed';
+            bed.dataset.index = i;
+            
+            // Create bed icon SVG
+            bed.innerHTML = `
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <rect class="bed-frame" x="2" y="10" width="20" height="8" rx="1"/>
+                    <rect class="bed-frame" x="2" y="8" width="4" height="2" rx="0.5"/>
+                    <rect class="bed-frame" x="18" y="8" width="4" height="2" rx="0.5"/>
+                    <rect class="bed-frame" x="4" y="12" width="16" height="4" rx="0.5"/>
+                </svg>
+            `;
+            
+            grid.appendChild(bed);
+            beds.push(bed);
+        }
+
+        // Define which beds get which classification
+        let currentIndex = 0;
+        
+        // Threat Level 1
+        const threat1Beds = beds.slice(currentIndex, currentIndex + data.threat1);
+        currentIndex += data.threat1;
+        
+        // Threat Level 2
+        const threat2Beds = beds.slice(currentIndex, currentIndex + data.threat2);
+        currentIndex += data.threat2;
+        
+        // Threat Level 3
+        const threat3Beds = beds.slice(currentIndex, currentIndex + data.threat3);
+        currentIndex += data.threat3;
+        
+        // No Threat Level
+        const noThreatBeds = beds.slice(currentIndex, currentIndex + data.noThreat);
+
+        // Scroll animation
+        function updateBeds() {
+            const vizContainer = document.querySelector('.viz-container');
+            const rect = vizContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Calculate scroll progress through the viz container (0 to 1)
+            const scrollProgress = Math.max(0, Math.min(1, 
+                (windowHeight - rect.top) / (windowHeight + rect.height * 0.7)
+            ));
+
+            // Calculate how many beds should be colored based on scroll (slower)
+            const totalOccupied = data.threat1 + data.threat2 + data.threat3 + data.noThreat;
+            const bedsToColor = Math.floor(scrollProgress * totalOccupied * 1.2);
+
+            // Color the beds progressively
+            let colored = 0;
+            
+            // Color Threat Level 1 beds
+            threat1Beds.forEach(bed => {
+                if (colored < bedsToColor) {
+                    bed.classList.add('threat-1');
+                    colored++;
+                } else {
+                    bed.classList.remove('threat-1');
+                }
+            });
+            
+            // Color Threat Level 2 beds
+            threat2Beds.forEach(bed => {
+                if (colored < bedsToColor) {
+                    bed.classList.add('threat-2');
+                    colored++;
+                } else {
+                    bed.classList.remove('threat-2');
+                }
+            });
+            
+            // Color Threat Level 3 beds
+            threat3Beds.forEach(bed => {
+                if (colored < bedsToColor) {
+                    bed.classList.add('threat-3');
+                    colored++;
+                } else {
+                    bed.classList.remove('threat-3');
+                }
+            });
+            
+            // No Threat beds
+            noThreatBeds.forEach(bed => {
+                if (colored < bedsToColor) {
+                    bed.classList.add('no-threat');
+                    colored++;
+                } else {
+                    bed.classList.remove('no-threat');
+                }
+            });
+        }
+
+        // Update on scroll
+        window.addEventListener('scroll', updateBeds);
+        
+        // Initial update
+        updateBeds();
+    </script>
+</body>
+</html>
