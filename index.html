@@ -495,11 +495,15 @@
         
         <p>During the Biden administration, the average ICE detainee population at PCCF dropped from 296 in 2019 to around 100 throughout 2021, 2022, and 2023.</p>
         
+        <div id="fiscalYearChart" style="margin: 3em 0;"></div>
+        
         <p>Data from the Plymouth Sheriff's Office also shows that PCCF is often over capacity at the beginning of day count, even with a low average length of stay. This underscores both the high volume of arrests and the transient nature of ICE's detention process, with detainees being moved between facilities on a daily basis.</p>
         
         <p class="quote">"The population does seem to be a bit more dynamic in the sense that they come and they go," said McDonald. "It may well be that half of that population is different than the half that we had yesterday."</p>
         
         <p>The numbers in the October daily detainee count frequently rise above the allotted bed space of 526 for the "beginning of day" count, but fall back down for the "End of day" count. On October 1, the count was 533 at the beginning of the day, but fell to 515 by the end of the day. On October 27 the count was 536 at the beginning of the day, but fell to 516 by the end of the day.</p>
+        
+        <div id="octoberChart" style="margin: 3em 0;"></div>
         
         <p>High-frequency transfers of detainees have been a central characteristic of the Trump administration's immigration policy, according to Pomerleau. Constant relocations make it difficult for family and friends to maintain contact and create significant barriers for legal representation, undermining detainees' ability to access due process.</p>
         
@@ -720,14 +724,16 @@
                 { month: 'Nov', count: 518 }
             ];
 
-            const width = 900;
-            const height = 400;
-            const margin = { top: 20, right: 30, bottom: 40, left: 60 };
+            const width = 1000;
+            const height = 500;
+            const margin = { top: 20, right: 40, bottom: 60, left: 80 };
             const chartWidth = width - margin.left - margin.right;
             const chartHeight = height - margin.top - margin.bottom;
 
-            // Scales
-            const xScale = (index) => (index / (data.length - 1)) * chartWidth;
+            // Scales - spread evenly across the full width
+            const xScale = (index) => {
+                return (index / (data.length - 1)) * chartWidth;
+            };
             const yMin = 400;
             const yMax = 560;
             const yScale = (value) => chartHeight - ((value - yMin) / (yMax - yMin)) * chartHeight;
@@ -747,141 +753,144 @@
             }
 
             // Y-axis ticks
-            const yTicks = [400, 420, 440, 460, 480, 500, 520, 526, 540, 560];
+            const yTicks = [410, 430, 450, 470, 490, 510, 526, 540, 560];
 
             container.innerHTML = `
-                <div style="background: white; padding: 40px; border: 1px solid #e0e0e0; max-width: 1000px; margin: 0 auto;">
+                <div style="background: white; padding: 40px; border: 1px solid #e0e0e0; max-width: 1100px; margin: 0 auto; overflow: hidden;">
                     <h3 style="font-family: 'Work Sans', sans-serif; font-size: 1.8em; font-weight: 600; color: #1a1a1a; margin-bottom: 10px;">
-                        First of the month detainee counts
+                        Detainee Count - First of the Month
                     </h3>
                     <p style="font-family: 'Work Sans', sans-serif; font-size: 1em; color: #666; margin-bottom: 30px;">
                         January 2025 - November 2025
                     </p>
                     
-                    <svg width="${width}" height="${height}" style="font-family: 'Work Sans', sans-serif;">
-                        <defs>
-                            <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.4" />
-                                <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.05" />
-                            </linearGradient>
-                        </defs>
-                        
-                        <g transform="translate(${margin.left}, ${margin.top})">
-                            <!-- Grid lines -->
-                            ${yTicks.map(tick => `
+                    <div style="width: 100%; overflow-x: auto;">
+                        <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="font-family: 'Work Sans', sans-serif; display: block; max-width: 100%; height: auto;">
+                            <defs>
+                                <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#5b8ff9;stop-opacity:0.5" />
+                                    <stop offset="100%" style="stop-color:#5b8ff9;stop-opacity:0.1" />
+                                </linearGradient>
+                            </defs>
+                            
+                            <g transform="translate(${margin.left}, ${margin.top})">
+                                <!-- Grid lines -->
+                                ${yTicks.map(tick => `
+                                    <line 
+                                        x1="0" 
+                                        y1="${yScale(tick)}" 
+                                        x2="${chartWidth}" 
+                                        y2="${yScale(tick)}" 
+                                        stroke="#e8e8e8" 
+                                        stroke-width="1"
+                                    />
+                                `).join('')}
+                                
+                                <!-- Red reference line at 526 -->
                                 <line 
                                     x1="0" 
-                                    y1="${yScale(tick)}" 
+                                    y1="${yScale(526)}" 
                                     x2="${chartWidth}" 
-                                    y2="${yScale(tick)}" 
-                                    stroke="#e2e8f0" 
-                                    stroke-dasharray="3,3"
+                                    y2="${yScale(526)}" 
+                                    stroke="#ef4444" 
+                                    stroke-width="2.5" 
+                                    stroke-dasharray="8,4"
                                 />
-                            `).join('')}
-                            
-                            <!-- Red reference line at 526 -->
-                            <line 
-                                x1="0" 
-                                y1="${yScale(526)}" 
-                                x2="${chartWidth}" 
-                                y2="${yScale(526)}" 
-                                stroke="#ef4444" 
-                                stroke-width="2" 
-                                stroke-dasharray="5,5"
-                            />
-                            
-                            <!-- Area -->
-                            <path 
-                                d="${areaPath}" 
-                                fill="url(#areaGradient)"
-                            />
-                            
-                            <!-- Line -->
-                            <path 
-                                d="${linePath}" 
-                                fill="none" 
-                                stroke="#3b82f6" 
-                                stroke-width="2"
-                            />
-                            
-                            <!-- Data points -->
-                            ${data.map((d, i) => `
-                                <circle 
-                                    cx="${xScale(i)}" 
-                                    cy="${yScale(d.count)}" 
-                                    r="4" 
-                                    fill="#3b82f6" 
-                                    stroke="white" 
-                                    stroke-width="2"
-                                    class="data-point"
-                                    data-month="${d.month}"
-                                    data-count="${d.count}"
-                                    style="cursor: pointer;"
+                                
+                                <!-- Area -->
+                                <path 
+                                    d="${areaPath}" 
+                                    fill="url(#areaGradient)"
                                 />
-                            `).join('')}
-                            
-                            <!-- X-axis -->
-                            <line 
-                                x1="0" 
-                                y1="${chartHeight}" 
-                                x2="${chartWidth}" 
-                                y2="${chartHeight}" 
-                                stroke="#64748b" 
-                                stroke-width="1"
-                            />
-                            
-                            <!-- X-axis labels -->
-                            ${data.map((d, i) => `
+                                
+                                <!-- Line -->
+                                <path 
+                                    d="${linePath}" 
+                                    fill="none" 
+                                    stroke="#3b7dd6" 
+                                    stroke-width="3"
+                                />
+                                
+                                <!-- Data points -->
+                                ${data.map((d, i) => `
+                                    <circle 
+                                        cx="${xScale(i)}" 
+                                        cy="${yScale(d.count)}" 
+                                        r="5" 
+                                        fill="#3b7dd6" 
+                                        stroke="white" 
+                                        stroke-width="2"
+                                        class="data-point"
+                                        data-month="${d.month}"
+                                        data-count="${d.count}"
+                                        style="cursor: pointer;"
+                                    />
+                                `).join('')}
+                                
+                                <!-- X-axis -->
+                                <line 
+                                    x1="0" 
+                                    y1="${chartHeight}" 
+                                    x2="${chartWidth}" 
+                                    y2="${chartHeight}" 
+                                    stroke="#94a3b8" 
+                                    stroke-width="1.5"
+                                />
+                                
+                                <!-- X-axis labels -->
+                                ${data.map((d, i) => `
+                                    <text 
+                                        x="${xScale(i)}" 
+                                        y="${chartHeight + 30}" 
+                                        text-anchor="middle" 
+                                        fill="#64748b" 
+                                        font-size="15"
+                                        font-weight="400"
+                                    >
+                                        ${d.month}
+                                    </text>
+                                `).join('')}
+                                
+                                <!-- Y-axis -->
+                                <line 
+                                    x1="0" 
+                                    y1="0" 
+                                    x2="0" 
+                                    y2="${chartHeight}" 
+                                    stroke="#94a3b8" 
+                                    stroke-width="1.5"
+                                />
+                                
+                                <!-- Y-axis labels -->
+                                ${yTicks.map(tick => `
+                                    <text 
+                                        x="-15" 
+                                        y="${yScale(tick)}" 
+                                        text-anchor="end" 
+                                        dominant-baseline="middle" 
+                                        fill="${tick === 526 ? '#ef4444' : '#64748b'}" 
+                                        font-size="15"
+                                        font-weight="${tick === 526 ? '700' : '400'}"
+                                    >
+                                        ${tick}
+                                    </text>
+                                `).join('')}
+                                
+                                <!-- Y-axis label -->
                                 <text 
-                                    x="${xScale(i)}" 
-                                    y="${chartHeight + 20}" 
+                                    transform="rotate(-90)" 
+                                    x="${-chartHeight / 2}" 
+                                    y="-55" 
                                     text-anchor="middle" 
-                                    fill="#64748b" 
-                                    font-size="14"
+                                    fill="#334155" 
+                                    font-size="15"
+                                    font-weight="400"
                                 >
-                                    ${d.month}
+                                    Number of detainees
                                 </text>
-                            `).join('')}
-                            
-                            <!-- Y-axis -->
-                            <line 
-                                x1="0" 
-                                y1="0" 
-                                x2="0" 
-                                y2="${chartHeight}" 
-                                stroke="#64748b" 
-                                stroke-width="1"
-                            />
-                            
-                            <!-- Y-axis labels -->
-                            ${yTicks.map(tick => `
-                                <text 
-                                    x="-10" 
-                                    y="${yScale(tick)}" 
-                                    text-anchor="end" 
-                                    dominant-baseline="middle" 
-                                    fill="${tick === 526 ? '#ef4444' : '#64748b'}" 
-                                    font-size="14"
-                                    font-weight="${tick === 526 ? '600' : '400'}"
-                                >
-                                    ${tick}
-                                </text>
-                            `).join('')}
-                            
-                            <!-- Y-axis label -->
-                            <text 
-                                transform="rotate(-90)" 
-                                x="${-chartHeight / 2}" 
-                                y="-45" 
-                                text-anchor="middle" 
-                                fill="#64748b" 
-                                font-size="14"
-                                font-weight="600"
-                            >
-                                Number of detainees
-                            </text>
-                        </g>
-                    </svg>
+                            </g>
+                        </svg>
+                    </div>
                     
                     <div id="chartTooltip" style="
                         position: absolute;
@@ -892,6 +901,7 @@
                         display: none;
                         pointer-events: none;
                         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        z-index: 1000;
                     "></div>
                 </div>
             `;
@@ -923,6 +933,523 @@
         
         // Initialize detainee chart
         DetaineeChart();
+
+        // October Beginning vs End of Day Chart
+        function OctoberChart() {
+            const container = document.getElementById('octoberChart');
+            
+            const data = [
+                {date: 1, day: "Wed", beginning: 485, end: 475},
+                {date: 2, day: "Thu", beginning: 490, end: 477},
+                {date: 3, day: "Fri", beginning: 500, end: 489},
+                {date: 4, day: "Sat", beginning: 480, end: 473},
+                {date: 5, day: "Sun", beginning: 478, end: 476},
+                {date: 6, day: "Mon", beginning: 483, end: 467},
+                {date: 7, day: "Tue", beginning: 497, end: 481},
+                {date: 8, day: "Wed", beginning: 501, end: 482},
+                {date: 9, day: "Thu", beginning: 519, end: 499},
+                {date: 10, day: "Fri", beginning: 523, end: 516},
+                {date: 11, day: "Sat", beginning: 518, end: 511},
+                {date: 12, day: "Sun", beginning: 517, end: 515},
+                {date: 13, day: "Mon", beginning: 502, end: 497},
+                {date: 14, day: "Tue", beginning: 515, end: 502},
+                {date: 15, day: "Wed", beginning: 518, end: 497},
+                {date: 16, day: "Thu", beginning: 519, end: 503},
+                {date: 17, day: "Fri", beginning: 533, end: 515},
+                {date: 18, day: "Sat", beginning: 520, end: 516},
+                {date: 19, day: "Sun", beginning: 525, end: 520},
+                {date: 20, day: "Mon", beginning: 520, end: 515},
+                {date: 21, day: "Tue", beginning: 533, end: 512},
+                {date: 22, day: "Wed", beginning: 508, end: 496},
+                {date: 23, day: "Thu", beginning: 508, end: 506},
+                {date: 24, day: "Fri", beginning: 531, end: 507},
+                {date: 25, day: "Sat", beginning: 507, end: 498},
+                {date: 26, day: "Sun", beginning: 516, end: 507},
+                {date: 27, day: "Mon", beginning: 536, end: 516},
+                {date: 28, day: "Tue", beginning: 526, end: 515},
+                {date: 29, day: "Wed", beginning: 532, end: 524},
+                {date: 30, day: "Thu", beginning: 525, end: 525},
+                {date: 31, day: "Fri", beginning: 539, end: 524}
+            ];
+
+            const width = 1100;
+            const height = 550;
+            const margin = { top: 80, right: 40, bottom: 70, left: 80 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+
+            // Scales
+            const xScale = (date) => ((date - 1) / 30) * chartWidth;
+            const yMin = 460;
+            const yMax = 550;
+            const yScale = (value) => chartHeight - ((value - yMin) / (yMax - yMin)) * chartHeight;
+
+            // Create paths
+            let beginningPath = `M ${xScale(1)} ${yScale(data[0].beginning)}`;
+            let endPath = `M ${xScale(1)} ${yScale(data[0].end)}`;
+            
+            for (let i = 1; i < data.length; i++) {
+                beginningPath += ` L ${xScale(data[i].date)} ${yScale(data[i].beginning)}`;
+                endPath += ` L ${xScale(data[i].date)} ${yScale(data[i].end)}`;
+            }
+
+            const yTicks = [460, 480, 500, 520, 540];
+            const patternDays = data.filter(d => d.beginning > 526 && d.end < 526);
+
+            container.innerHTML = `
+                <div style="background: white; padding: 40px; border: 1px solid #e0e0e0; max-width: 1200px; margin: 0 auto;">
+                    <h3 style="font-family: 'Work Sans', sans-serif; font-size: 1.8em; font-weight: 600; color: #1a1a1a; margin-bottom: 10px;">
+                        PCCF Beginning of Day v. End of Day - October 2025
+                    </h3>
+                    <p style="font-family: 'Work Sans', sans-serif; font-size: 1em; color: #666; margin-bottom: 20px;">
+                        Tracking the days with a count that starts above 526 and ends below 526
+                    </p>
+                    
+                    <!-- Legend -->
+                    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; font-family: 'Work Sans', sans-serif;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 30px; height: 3px; background: #3b82f6;"></div>
+                            <span style="font-weight: 600; font-size: 0.95em;">Beginning of Day</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="width: 30px; height: 3px; background: #f97316;"></div>
+                            <span style="font-weight: 600; font-size: 0.95em;">End of Day</span>
+                        </div>
+                    </div>
+                    
+                    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="font-family: 'Work Sans', sans-serif; display: block; max-width: 100%; height: auto;">
+                        <g transform="translate(${margin.left}, ${margin.top})">
+                            <!-- Grid lines -->
+                            ${yTicks.map(tick => `
+                                <line 
+                                    x1="0" 
+                                    y1="${yScale(tick)}" 
+                                    x2="${chartWidth}" 
+                                    y2="${yScale(tick)}" 
+                                    stroke="#e8e8e8" 
+                                    stroke-width="1"
+                                />
+                            `).join('')}
+                            
+                            <!-- Red reference line at 526 -->
+                            <line 
+                                x1="0" 
+                                y1="${yScale(526)}" 
+                                x2="${chartWidth}" 
+                                y2="${yScale(526)}" 
+                                stroke="#ef4444" 
+                                stroke-width="2.5" 
+                                stroke-dasharray="8,4"
+                            />
+                            <text 
+                                x="-10" 
+                                y="${yScale(526)}" 
+                                text-anchor="end" 
+                                dominant-baseline="middle" 
+                                fill="#ef4444" 
+                                font-size="15"
+                                font-weight="700"
+                            >
+                                526
+                            </text>
+                            
+                            <!-- Purple vertical lines for days starting above 526 -->
+                            ${data.filter(d => d.beginning > 526).map(d => `
+                                <line 
+                                    x1="${xScale(d.date)}" 
+                                    y1="0" 
+                                    x2="${xScale(d.date)}" 
+                                    y2="${chartHeight}" 
+                                    stroke="#8b5cf6" 
+                                    stroke-width="2"
+                                    stroke-opacity="0.4"
+                                />
+                            `).join('')}
+                            
+                            <!-- End of Day line -->
+                            <path 
+                                d="${endPath}" 
+                                fill="none" 
+                                stroke="#f97316" 
+                                stroke-width="3"
+                            />
+                            
+                            <!-- Beginning of Day line -->
+                            <path 
+                                d="${beginningPath}" 
+                                fill="none" 
+                                stroke="#3b82f6" 
+                                stroke-width="3"
+                            />
+                            
+                            <!-- Beginning of Day points -->
+                            ${data.map(d => `
+                                <circle 
+                                    cx="${xScale(d.date)}" 
+                                    cy="${yScale(d.beginning)}" 
+                                    r="5" 
+                                    fill="#3b82f6" 
+                                    stroke="white" 
+                                    stroke-width="2"
+                                    class="october-point"
+                                    data-date="${d.date}"
+                                    data-day="${d.day}"
+                                    data-beginning="${d.beginning}"
+                                    data-end="${d.end}"
+                                    data-type="beginning"
+                                    style="cursor: pointer;"
+                                />
+                            `).join('')}
+                            
+                            <!-- End of Day points -->
+                            ${data.map(d => `
+                                <circle 
+                                    cx="${xScale(d.date)}" 
+                                    cy="${yScale(d.end)}" 
+                                    r="5" 
+                                    fill="#f97316" 
+                                    stroke="white" 
+                                    stroke-width="2"
+                                    class="october-point"
+                                    data-date="${d.date}"
+                                    data-day="${d.day}"
+                                    data-beginning="${d.beginning}"
+                                    data-end="${d.end}"
+                                    data-type="end"
+                                    style="cursor: pointer;"
+                                />
+                            `).join('')}
+                            
+                            <!-- X-axis -->
+                            <line 
+                                x1="0" 
+                                y1="${chartHeight}" 
+                                x2="${chartWidth}" 
+                                y2="${chartHeight}" 
+                                stroke="#94a3b8" 
+                                stroke-width="1.5"
+                            />
+                            
+                            <!-- X-axis labels -->
+                            ${[1, 5, 10, 15, 20, 25, 31].map(date => `
+                                <text 
+                                    x="${xScale(date)}" 
+                                    y="${chartHeight + 20}" 
+                                    text-anchor="middle" 
+                                    fill="#64748b" 
+                                    font-size="13"
+                                >
+                                    ${date}
+                                </text>
+                            `).join('')}
+                            
+                            <!-- X-axis label -->
+                            <text 
+                                x="${chartWidth / 2}" 
+                                y="${chartHeight + 50}" 
+                                text-anchor="middle" 
+                                fill="#334155" 
+                                font-size="15"
+                                font-weight="600"
+                            >
+                                October 2025
+                            </text>
+                            
+                            <!-- Y-axis -->
+                            <line 
+                                x1="0" 
+                                y1="0" 
+                                x2="0" 
+                                y2="${chartHeight}" 
+                                stroke="#94a3b8" 
+                                stroke-width="1.5"
+                            />
+                            
+                            <!-- Y-axis labels -->
+                            ${yTicks.map(tick => `
+                                <text 
+                                    x="-15" 
+                                    y="${yScale(tick)}" 
+                                    text-anchor="end" 
+                                    dominant-baseline="middle" 
+                                    fill="#64748b" 
+                                    font-size="15"
+                                >
+                                    ${tick}
+                                </text>
+                            `).join('')}
+                            
+                            <!-- Y-axis label -->
+                            <text 
+                                transform="rotate(-90)" 
+                                x="${-chartHeight / 2}" 
+                                y="-55" 
+                                text-anchor="middle" 
+                                fill="#334155" 
+                                font-size="15"
+                                font-weight="600"
+                            >
+                                Number of Detainees
+                            </text>
+                        </g>
+                    </svg>
+                    
+                    <div id="octoberTooltip" style="
+                        position: absolute;
+                        background: white;
+                        border: 1px solid #d1d5db;
+                        border-radius: 8px;
+                        padding: 12px;
+                        display: none;
+                        pointer-events: none;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                        z-index: 1000;
+                        font-family: 'Work Sans', sans-serif;
+                    "></div>
+                </div>
+            `;
+
+            // Add tooltip interaction
+            const points = container.querySelectorAll('.october-point');
+            const tooltip = container.querySelector('#octoberTooltip');
+            
+            points.forEach(point => {
+                point.addEventListener('mouseenter', (e) => {
+                    const date = e.target.getAttribute('data-date');
+                    const day = e.target.getAttribute('data-day');
+                    const beginning = e.target.getAttribute('data-beginning');
+                    const end = e.target.getAttribute('data-end');
+                    const drop = beginning - end;
+                    const hasPattern = beginning > 526 && end < 526;
+                    
+                    const rect = e.target.getBoundingClientRect();
+                    
+                    tooltip.innerHTML = `
+                        <div style="font-weight: 600; margin-bottom: 6px;">Oct ${date} (${day})</div>
+                        <div style="color: #3b82f6; margin-bottom: 2px;">Beginning: ${beginning}</div>
+                        <div style="color: #f97316; margin-bottom: 4px;">End: ${end}</div>
+                        <div style="color: #64748b; font-size: 0.9em; margin-bottom: 4px;">Drop: ${drop}</div>
+                        ${hasPattern ? '<div style="color: #15803d; font-weight: 600; font-size: 0.9em; border-top: 1px solid #d1d5db; padding-top: 6px; margin-top: 6px;">✓ Starts above 526, ends below</div>' : ''}
+                    `;
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (rect.left + window.scrollX) + 'px';
+                    tooltip.style.top = (rect.top + window.scrollY - 110) + 'px';
+                });
+                
+                point.addEventListener('mouseleave', () => {
+                    tooltip.style.display = 'none';
+                });
+            });
+        }
+        
+        // Initialize October chart
+        OctoberChart();
+
+        // Fiscal Year Average Daily Population Chart
+        function FiscalYearChart() {
+            const container = document.getElementById('fiscalYearChart');
+            
+            const data = [
+                { year: 'FY2019', value: 296 },
+                { year: 'FY2020', value: 221 },
+                { year: 'FY2021', value: 88 },
+                { year: 'FY2022', value: 109 },
+                { year: 'FY2023', value: 91 },
+                { year: 'FY2024', value: 246 },
+                { year: 'FY2025', value: 449 },
+                { year: 'FY2026', value: 509 }
+            ];
+
+            const width = 1000;
+            const height = 500;
+            const margin = { top: 20, right: 40, bottom: 60, left: 80 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+
+            // Scales
+            const xScale = (index) => (index / (data.length - 1)) * chartWidth;
+            const yMin = 0;
+            const yMax = 550;
+            const yScale = (value) => chartHeight - ((value - yMin) / (yMax - yMin)) * chartHeight;
+
+            // Create area path
+            let areaPath = `M ${xScale(0)} ${yScale(data[0].value)}`;
+            for (let i = 1; i < data.length; i++) {
+                areaPath += ` L ${xScale(i)} ${yScale(data[i].value)}`;
+            }
+            areaPath += ` L ${xScale(data.length - 1)} ${chartHeight}`;
+            areaPath += ` L ${xScale(0)} ${chartHeight} Z`;
+
+            // Create line path
+            let linePath = `M ${xScale(0)} ${yScale(data[0].value)}`;
+            for (let i = 1; i < data.length; i++) {
+                linePath += ` L ${xScale(i)} ${yScale(data[i].value)}`;
+            }
+
+            const yTicks = [100, 200, 300, 400, 500];
+
+            container.innerHTML = `
+                <div style="background: white; padding: 40px; border: 1px solid #e0e0e0; max-width: 1100px; margin: 0 auto;">
+                    <h3 style="font-family: 'Work Sans', sans-serif; font-size: 1.8em; font-weight: 600; color: #1a1a1a; margin-bottom: 5px;">
+                        Average daily population (ADP)
+                    </h3>
+                    <p style="font-family: 'Work Sans', sans-serif; font-size: 1em; color: #666; font-weight: 600; margin-bottom: 30px;">
+                        FY 2019 - FY 2026 YTD
+                    </p>
+                    
+                    <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="font-family: 'Work Sans', sans-serif; display: block; max-width: 100%; height: auto;">
+                        <defs>
+                            <linearGradient id="fyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="5%" style="stop-color:#3b82f6;stop-opacity:0.8" />
+                                <stop offset="95%" style="stop-color:#3b82f6;stop-opacity:0.1" />
+                            </linearGradient>
+                        </defs>
+                        
+                        <g transform="translate(${margin.left}, ${margin.top})">
+                            <!-- Grid lines -->
+                            ${yTicks.map(tick => `
+                                <line 
+                                    x1="0" 
+                                    y1="${yScale(tick)}" 
+                                    x2="${chartWidth}" 
+                                    y2="${yScale(tick)}" 
+                                    stroke="#e8e8e8" 
+                                    stroke-width="1"
+                                />
+                            `).join('')}
+                            
+                            <!-- Area -->
+                            <path 
+                                d="${areaPath}" 
+                                fill="url(#fyGradient)"
+                            />
+                            
+                            <!-- Line -->
+                            <path 
+                                d="${linePath}" 
+                                fill="none" 
+                                stroke="#3b82f6" 
+                                stroke-width="3"
+                            />
+                            
+                            <!-- Data points -->
+                            ${data.map((d, i) => `
+                                <circle 
+                                    cx="${xScale(i)}" 
+                                    cy="${yScale(d.value)}" 
+                                    r="5" 
+                                    fill="#3b82f6" 
+                                    stroke="white" 
+                                    stroke-width="2"
+                                    class="fy-point"
+                                    data-year="${d.year}"
+                                    data-value="${d.value}"
+                                    style="cursor: pointer;"
+                                />
+                            `).join('')}
+                            
+                            <!-- X-axis -->
+                            <line 
+                                x1="0" 
+                                y1="${chartHeight}" 
+                                x2="${chartWidth}" 
+                                y2="${chartHeight}" 
+                                stroke="#94a3b8" 
+                                stroke-width="1.5"
+                            />
+                            
+                            <!-- X-axis labels -->
+                            ${data.map((d, i) => `
+                                <text 
+                                    x="${xScale(i)}" 
+                                    y="${chartHeight + 25}" 
+                                    text-anchor="middle" 
+                                    fill="#6b7280" 
+                                    font-size="14"
+                                >
+                                    ${d.year}
+                                </text>
+                            `).join('')}
+                            
+                            <!-- Y-axis -->
+                            <line 
+                                x1="0" 
+                                y1="0" 
+                                x2="0" 
+                                y2="${chartHeight}" 
+                                stroke="#94a3b8" 
+                                stroke-width="1.5"
+                            />
+                            
+                            <!-- Y-axis labels -->
+                            ${yTicks.map(tick => `
+                                <text 
+                                    x="-15" 
+                                    y="${yScale(tick)}" 
+                                    text-anchor="end" 
+                                    dominant-baseline="middle" 
+                                    fill="#6b7280" 
+                                    font-size="15"
+                                >
+                                    ${tick}
+                                </text>
+                            `).join('')}
+                            
+                            <!-- Y-axis label -->
+                            <text 
+                                transform="rotate(-90)" 
+                                x="${-chartHeight / 2}" 
+                                y="-55" 
+                                text-anchor="middle" 
+                                fill="#6b7280" 
+                                font-size="15"
+                            >
+                                Number of detainees
+                            </text>
+                        </g>
+                    </svg>
+                    
+                    <div id="fyTooltip" style="
+                        position: absolute;
+                        background: white;
+                        border: 1px solid #e5e7eb;
+                        border-radius: 6px;
+                        padding: 8px 12px;
+                        display: none;
+                        pointer-events: none;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        z-index: 1000;
+                    "></div>
+                </div>
+            `;
+
+            // Add tooltip interaction
+            const points = container.querySelectorAll('.fy-point');
+            const tooltip = container.querySelector('#fyTooltip');
+            
+            points.forEach(point => {
+                point.addEventListener('mouseenter', (e) => {
+                    const year = e.target.getAttribute('data-year');
+                    const value = e.target.getAttribute('data-value');
+                    const rect = e.target.getBoundingClientRect();
+                    
+                    tooltip.innerHTML = `
+                        <div style="font-weight: 600; color: #1f2937; margin-bottom: 2px;">${year}</div>
+                        <div style="color: #3b82f6;">ADP: ${value}</div>
+                    `;
+                    tooltip.style.display = 'block';
+                    tooltip.style.left = (rect.left + window.scrollX) + 'px';
+                    tooltip.style.top = (rect.top + window.scrollY - 60) + 'px';
+                });
+                
+                point.addEventListener('mouseleave', () => {
+                    tooltip.style.display = 'none';
+                });
+            });
+        }
+        
+        // Initialize fiscal year chart
+        FiscalYearChart();
     </script>
 </body>
 </html>
