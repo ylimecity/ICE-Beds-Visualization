@@ -212,6 +212,55 @@
             color: #1a1a1a;
         }
 
+        .article-section {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 60px 40px;
+            background: #ffffff;
+            border-top: 3px solid #2c3e50;
+        }
+
+        .article-section p {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: 1.2em;
+            line-height: 1.9;
+            color: #2c3e50;
+            margin-bottom: 1.5em;
+        }
+
+        .article-section h2 {
+            font-family: 'Crimson Text', Georgia, serif;
+            font-size: 2.2em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 2em 0 1em 0;
+            line-height: 1.3;
+        }
+
+        .article-section h3 {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 2em 0 1em 0;
+        }
+
+        .article-section .quote {
+            font-style: italic;
+            color: #4a4a4a;
+            border-left: 4px solid #3498db;
+            padding-left: 20px;
+            margin: 2em 0;
+        }
+
+        .article-section .highlight-stat {
+            background: #f8f9fa;
+            padding: 30px;
+            border-left: 4px solid #c1272d;
+            margin: 2em 0;
+            font-size: 1.1em;
+        }
+
         @media (max-width: 768px) {
             .beds-grid {
                 grid-template-columns: repeat(15, 1fr);
@@ -234,19 +283,31 @@
                 grid-template-columns: 1fr;
                 padding: 30px 20px;
             }
+
+            .article-section {
+                padding: 40px 20px;
+            }
+
+            .article-section p {
+                font-size: 1.1em;
+            }
+
+            .article-section h2 {
+                font-size: 1.8em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="intro-section">
         <h1>Plymouth County Correctional Facility</h1>
-        <p class="subtitle">ICE rents 500 beds at this facility, with 450 currently occupied. As you scroll, watch how these beds fill in by threat level classification.</p>
+        <p class="subtitle">ICE rents 526 beds at this facility, with 449 occupied on an average day in fiscal year 2025. As you scroll, watch how these beds fill in by threat level classification.</p>
         <p class="scroll-hint">Scroll to explore ↓</p>
     </div>
 
     <div class="viz-container">
         <div class="beds-wrapper">
-            <h2 class="section-title">450 Beds by Threat Level</h2>
+            <h2 class="section-title">449 Beds by Threat Level</h2>
             <p class="section-subtitle">Average Daily Population, FY2025</p>
             
             <div class="beds-grid" id="bedsGrid"></div>
@@ -289,10 +350,109 @@
             <div class="stats">
                 <h3>The Bottom Line</h3>
                 <div class="key-finding">
-                    <strong>87.1%</strong> of ICE detainees at Plymouth County Correctional Facility have no criminal convictions. Only <strong>58 of 450 occupied beds</strong> (12.9%) are held by individuals with any threat level classification.
+                    <strong>87.3%</strong> of ICE detainees at Plymouth County Correctional Facility have no criminal convictions. Only <strong>58 of 449 occupied beds</strong> (12.9%) are held by individuals with any threat level classification.
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-section">
+        <p>On the shore of a quaint, touristy New England town sits a grand marble pavilion that houses Plymouth Rock. It is the physical representation of the first wave of immigrants that came to the "New World" to escape religious persecution.</p>
+        
+        <p>The monument has become a symbol of striking irony when contrasted with the immigration policies of Plymouth County and the federal government.</p>
+        
+        <p>Just 2.4 miles away is the Plymouth County Correctional Facility (PCCF), the last remaining prison in Massachusetts that holds an active contract with Immigration and Customs Enforcement (ICE).</p>
+        
+        <p class="quote">"My clients are sitting in the Plymouth County Jail," said immigration attorney Todd Pomerleau, who has represented numerous individuals held there by ICE. "They have escaped similar persecution and yet are being persecuted by the United States of America."</p>
+        
+        <p>Joseph D. McDonald Jr. became the sheriff of Plymouth County in 2005 and has since overseen PCCF's contracts with ICE. He is one of two Republican sheriffs in Massachusetts and is vocal about his belief that local law enforcement should work congruently with the federal government.</p>
+        
+        <p>The most recent contract with PCCF and ICE was signed in September 2024 and will last until 2029.</p>
+        
+        <p>PCCF is also the only remaining facility in Massachusetts that holds ICE detainees. In recent years several other Massachusetts county jails ended their ICE contracts. For example, the contract for immigrant detainees at Bristol County Sheriff's Office was terminated in 2021 after serious concerns about mistreatment of detainees.</p>
+        
+        <p class="quote">"[Plymouth] didn't lose their contract with ICE unlike the Bristol County Jail and South Bay," said Pomerleau. "There are a few other facilities we used to have, but the problem with them losing the contracts is now, for example, there's no bed space for women."</p>
+        
+        <p>Limitations outlined in its contract permit only the jailing of male detainees over the age of 18, requiring other demographics to be sent out of state to facilities, where laws and policies differ.</p>
+        
+        <p class="quote">"Those individuals that are not housed with us are sent off to other places, specifically, like Texas, Louisiana, Florida," said McDonald.</p>
+        
+        <p>Pomerleau, a lawyer based in downtown Boston, frequently represents individuals who have been detained by ICE in the city but are later transferred to facilities in other states.</p>
+        
+        <p class="quote">"It seems like the men go to Buffalo, the women go to Vermont, then they wind up in Texas or Louisiana," said Pomerleau.</p>
+        
+        <p class="highlight-stat">ICE and the federal government have painted a narrative that they are rounding up the "worst of the worst," however 87.3% of ICE detainees at PCCF are rated at "No ICE Threat Level," according to data released by the Department of Homeland Security in September 2025.</p>
+        
+        <p>According to ICE, the "threat level is determined by the criminality of a detainee, including the recency of the criminal behavior and its severity… If a detainee has no criminal convictions, he/she will be classified as 'No ICE Threat Level.'"</p>
+        
+        <p>A visit to ICE's "newsroom," page on their main website clearly indicates the narrative they are attempting to portray. A subsection called "Worst of the Worst" outlines the latest high-profile arrests "to get a closer look at the criminal aliens we've recently taken into custody," according to the website.</p>
+        
+        <p>Here are two of their "newsroom" headlines from November.</p>
+        
+        <p class="quote">"ICE, Harris County Sheriff's Office arrest multiple criminal illegal aliens accused of repeatedly raping 12-year-old child smuggled into US during Obama administration."</p>
+        
+        <p class="quote">"Twice deported child predator arrested by ICE after violently assaulting officer with metal cup during attempt to flee."</p>
+        
+        <p>The threat level rating system with which all detainees are evaluated is determined by ICE, however PCCF uses a similar one to four rating system for individuals in state custody.</p>
+        
+        <p>It is not under sheriff McDonald's jurisdiction to assign the threat-level ratings to ICE detainees held in PCCF.</p>
+        
+        <p class="quote">"I am glad that, for the most part, most of the individuals that come to be housed with us for any period of time are on the lower end of that threat level," said McDonald.</p>
+
+        <h2>PCCF and ICE: A Long Relationship</h2>
+        
+        <p>Plymouth County Correctional Facility's relationship with the federal government dates back to the early 1980s, according to McDonald.</p>
+        
+        <p class="quote">"The contracts that are in place here in Plymouth County have been in place here for far longer than I have been the sheriff," said McDonald.</p>
+        
+        <p>In January 2017, the federal government requested PCCF to enter into a 287(g) agreement, a different type of contract than the one PCCF currently maintains.</p>
+        
+        <p>Under this agreement, ICE was able to grant state and local law enforcement officers "the authority to perform specified immigration officer functions under the agency's direction and oversight," according to ICE's website.</p>
+        
+        <p>The contract required PCCF to send law enforcement officers to be trained by ICE at a Federal Law Enforcement Training Facility (FLETC). These officers were given the authority to enforce federal laws and access national databases.</p>
+        
+        <p class="quote">"Our people would be able to check our individuals that were being booked in for crimes against the ICE database as to who was wanted by ICE, and we could put an initial detainer because we were authorized to do those types of things," said McDonald.</p>
+        
+        <p>PCCF terminated its 287(g) contract with ICE in September 2021 when its federally trained officers retired. McDonald has chosen not to renew the agreement, despite requests from ICE, citing staffing and budget shortages.</p>
+        
+        <p>Despite PCCF's discontinuation of their 287(g) contract with ICE, McDonald is open about their current collaboration beyond the jailing of detainees.</p>
+        
+        <p class="quote">"If someone's serving a sentence, we can know fairly certainly when it is they're going to wrap up," said McDonald. "If we know that there is an individual who is wanted by ICE, they have a detainer on that person, we can let them know that 'hey, within the next week, this person is going to be released,' and ICE can make arrangements to take that person into custody."</p>
+        
+        <p>McDonald is currently lobbying for a Massachusetts state bill that would have a similar effect, enabling the transfer of those set to be released on bail to ICE custody.</p>
+        
+        <p>Massachusetts Bill No. 2701, filed on 1/17/2025, proposes that if any level of law enforcement in the state has custody of an individual and receives an ICE detainer request, they can hold the individual for up to 36 hours, even if the person would otherwise be released, such as after posting bail.</p>
+        
+        <p>McDonald views the bill as advantageous because it extends the amount of time that ICE has to detain individuals who have been arrested, booked and posted bail after court proceedings.</p>
+        
+        <p class="quote">"We would like the opportunity to contact ICE and say 'Hey… here's the person, can you tell me verbally over the phone?' 'Yes, we're going to come and get that person,'" said McDonald.</p>
+
+        <h2>The Current Contract</h2>
+        
+        <p>The current contract between PCCF and ICE outlines details such as payment amounts to PCCF per detainee and per officer, what services detainees are allowed to use while in custody, the types of detainees the facility is allowed to hold and what data PCCF is required to track.</p>
+        
+        <p class="quote">"It's much like a hotel or an inn would be," said McDonald. "The number of people times the per diem rate. We're paid monthly."</p>
+        
+        <p>PCCF charges $215 per detainee, as well as $44.90 per hour for on-call guards, with an overtime rate of $67.35 per hour.</p>
+        
+        <p class="highlight-stat">In October alone, this daily bed rate brought in roughly $3.4 million for PCCF — a significant revenue stream for a single month.</p>
+        
+        <p>In response to criticism over PCCF's revenue from ICE detention, McDonald notes that the money goes directly into Plymouth County's general fund.</p>
+        
+        <p class="quote">"We don't even have a say as to how it's spent," said McDonald. "That's all up to the legislature."</p>
+
+        <h2>An Influx of Detainees Under Trump</h2>
+        
+        <p>PCCF has seen a significant increase in the number of detainees since the beginning of the second Trump administration and the subsequent immigration "crackdown" that began in early 2025.</p>
+        
+        <p class="quote">"Those numbers have gone up to somewhere in the vicinity of about 500 [detainees per day] and that is where they've essentially held steady," said McDonald.</p>
+        
+        <p>On January 1, PCCF held 406 ICE detainees. By February 1, that number had risen to 503, and it reached as high as 547 by August 1.</p>
+        
+        <p class="quote">"I did anticipate an increase in those numbers. That was one of the issues that I think Trump wrote into office — said he was going to be tightening up on those types of issues and enforcing immigration law," said McDonald.</p>
+        
+        <p>During the Biden administration, the average ICE detainee population at PCCF dropped from 296 in 2019 to around 100 throughout 2021, 2022, and 2023.</p>
     </div>
 
     <script>
@@ -304,10 +464,10 @@
             noThreat: 392
         };
 
-        const totalBeds = 450;
+        const totalBeds = 449;
         const grid = document.getElementById('bedsGrid');
 
-        // Create all 450 beds with bed icon SVG
+        // Create all 449 beds with bed icon SVG
         const beds = [];
         for (let i = 0; i < totalBeds; i++) {
             const bed = document.createElement('div');
